@@ -6,4 +6,14 @@ import { TasksService } from './tasks.service';
   controllers: [TasksController],
   providers: [TasksService]
 })
-export class TasksModule {}
+
+enum TaskStatus {
+  PENDING = 'PENDING',
+  COMPLETED = 'COMPLETED',
+}
+export class TasksModule {
+  id: string;
+  title: string;
+  description: string;
+  status: TaskStatus;
+}

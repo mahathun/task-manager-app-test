@@ -42,10 +42,11 @@ export class TasksService {
         return task;
     }
 
-    updateTaskStatus(id: string, title: string, description: string, status: TaskStatus): Task {
+    updateTaskStatus(id: string, updatedFields: Partial<Task>): Task | null {
 
+        const { title, description, status } = updatedFields;
         // validate the inputs
-        if(!this.validateTaskTitle(title) || !this.validateTaskStatus(status)) {
+        if(title && !this.validateTaskTitle(title) || status && !this.validateTaskStatus(status)) {
             return null;
         }
 

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TasksService } from './tasks.service';
-import { TaskStatus } from './tasks.module';
+import { Task, TaskStatus } from './tasks.module';
 
 describe('TasksService', () => {
   let service: TasksService;
@@ -17,22 +17,14 @@ describe('TasksService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('TasksService', () => {
-    let service: TasksService;
-
-    beforeEach(async () => {
-      const module: TestingModule = await Test.createTestingModule({
-        providers: [TasksService],
-      }).compile();
-
-      service = module.get<TasksService>(TasksService);
+  describe('getAllTasks', () => {
+    it('should return an empty array initially', () => {
+      expect(service.getAllTasks()).toEqual([]);
     });
+  });
 
-    it('should be defined', () => {
-      expect(service).toBeDefined();
-    });
-
-    it('should create a task', () => {
+  describe('createTask', () => {
+    it('should create a task with valid inputs', () => {
       const title = 'Test Task';
       const description = 'Test Description';
       const task = service.createTask(title, description);
@@ -42,49 +34,48 @@ describe('TasksService', () => {
       expect(task.status).toBe(TaskStatus.PENDING);
     });
 
-    it('should not create a task with an empty title', () => {
+    it('should return null if title is invalid', () => {
       const task = service.createTask('', 'Test Description');
       expect(task).toBeNull();
     });
+  });
 
-    it('should get all tasks', () => {
-      const title = 'Test Task';
-      const description = 'Test Description';
-      service.createTask(title, description);
-      const tasks = service.getAllTasks();
-      expect(tasks.length).toBe(1);
-      expect(tasks[0].title).toBe(title);
-      expect(tasks[0].description).toBe(description);
-    });
-
-    it('should update a task status', () => {
+  describe('updateTaskStatus', () => {
+    it('should update the task status with valid inputs', () => {
       const title = 'Test Task';
       const description = 'Test Description';
       const task = service.createTask(title, description);
-      const updatedTask = service.updateTaskStatus(task.id, title, description, TaskStatus.COMPLETED);
+      const updatedTask = service.updateTaskStatus(task.id, { status: TaskStatus.COMPLETED });
       expect(updatedTask).toBeDefined();
       expect(updatedTask.status).toBe(TaskStatus.COMPLETED);
     });
 
-    it('should not update a task with invalid status', () => {
-      const title = 'Test Task';
-      const description = 'Test Description';
-      const task = service.createTask(title, description);
-      const updatedTask = service.updateTaskStatus(task.id, title, description, 'INVALID_STATUS' as TaskStatus);
+    it('should return null if task id is not found', () => {
+      const updatedTask = service.updateTaskStatus('invalid-id', { status: TaskStatus.COMPLETED });
       expect(updatedTask).toBeNull();
     });
 
-    it('should delete a task', () => {
+    it('should return null if status is invalid', () => {
+      const title = 'Test Task';
+      const description = 'Test Description';
+      const task = service.createTask(title, description);
+      const updatedTask = service.updateTaskStatus(task.id, { status: 'INVALID_STATUS' as TaskStatus });
+      expect(updatedTask).toBeNull();
+    });
+  });
+
+  describe('deleteTask', () => {
+    it('should delete the task with valid id', () => {
       const title = 'Test Task';
       const description = 'Test Description';
       const task = service.createTask(title, description);
       const result = service.deleteTask(task.id);
       expect(result).toBe(true);
-      expect(service.getAllTasks().length).toBe(0);
+      expect(service.getAllTasks()).toEqual([]);
     });
 
-    it('should not delete a non-existing task', () => {
-      const result = service.deleteTask('non-existing-id');
+    it('should return false if task id is not found', () => {
+      const result = service.deleteTask('invalid-id');
       expect(result).toBe(false);
     });
   });

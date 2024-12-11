@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task, TaskStatus } from './tasks.module';
-import { isInStringEnum } from 'src/utils/helpers';
+import { isInStringEnum } from '../utils/helpers';
 
 @Controller('tasks')
 export class TasksController {
@@ -28,7 +28,7 @@ export class TasksController {
     updateTaskStatus(@Body() updateFields: Partial<Task>, @Param('id') id: string): Task | null {
         const {title, status} = updateFields;
 
-        if (!title) {
+        if (title && !title) {
             throw new HttpException('Title is required', HttpStatus.BAD_REQUEST);
         }
 

@@ -58,7 +58,13 @@ export class TasksService {
         }
 
         // if the task is found, update the task
-        this.tasks[taskIndex] = {...this.tasks[taskIndex], title, description, status};
+        const task = this.tasks[taskIndex];
+        this.tasks[taskIndex] = {
+            ...this.tasks[taskIndex], 
+            title: title?? task.title, 
+            description: description ?? task.description, 
+            status: status ?? task.status
+        };
         return this.tasks[taskIndex];
 
     }

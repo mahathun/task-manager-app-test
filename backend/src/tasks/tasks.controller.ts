@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task } from './tasks.module';
 
@@ -14,7 +14,14 @@ export class TasksController {
     @Post()
     createTask(@Body() body: {title: string, description: string}): Task {
         const { title, description } = body;
-        return this.taskService.createTask(title, description);
+        const task = this.taskService.createTask(title, description);
+
+        if (!task) {
+            throw new HttpException('Invalid input', HttpStatus.BAD_REQUEST);
+        }
+
+        return task;
+
     }   
 
     @Put(':id')
@@ -24,7 +31,13 @@ export class TasksController {
 
     @Delete(':id')
     deleteTask(@Param('id') id: string): boolean {
-        return this.taskService.deleteTask(id);
+        const hasTaskDeleted = this.taskService.deleteTask(id);
+
+        if (!hasTaskDeleted) {
+            throw new HttpException('Task not found', HttpStatus.NOT_FOUND);
+        }
+
+        return hasTaskDeleted;
     }
 
 }

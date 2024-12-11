@@ -2,16 +2,16 @@ import { Module } from '@nestjs/common';
 import { TasksController } from './tasks.controller';
 import { TasksService } from './tasks.service';
 
+export enum TaskStatus {
+  PENDING = 'pending',
+  COMPLETED = 'completed',
+}
+
 @Module({
   controllers: [TasksController],
   providers: [TasksService]
 })
-
-enum TaskStatus {
-  PENDING = 'PENDING',
-  COMPLETED = 'COMPLETED',
-}
-export class TasksModule {
+export class Task {
   id: string;
   title: string;
   description: string;

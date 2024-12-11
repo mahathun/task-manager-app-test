@@ -127,3 +127,6 @@ points for using NestJS).
 * **Enhanced Validations** - Use a validation library (e.g., class-validator) for stricter validation.
 * **Search/Filter** -  Add a search or filter feature for tasks.
 * **Real-time Updates** - Use WebSockets or a similar technology for real-time task updates.
+* **More Automated code quality/linting checks** - adding more linting guilelines and automated code quality check on commit will make the code more quality in the long run.
+* **Data clensing** - in an production environment we would want to cleanup user data a little bit more.
+* **Deployment** - Automated deployment

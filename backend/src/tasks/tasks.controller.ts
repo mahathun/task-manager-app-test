@@ -16,7 +16,7 @@ export class TasksController {
     createTask(@Body() body: {title: string, description: string}): Task {
         const { title, description } = body;
 
-        if (!title) {
+        if (title ==="") {
             throw new HttpException('Title is required', HttpStatus.BAD_REQUEST);
         }
 
@@ -28,7 +28,7 @@ export class TasksController {
     updateTaskStatus(@Body() updateFields: Partial<Task>, @Param('id') id: string): Task | null {
         const {title, status} = updateFields;
 
-        if (title && !title) {
+        if (title ==="") {
             throw new HttpException('Title is required', HttpStatus.BAD_REQUEST);
         }
 

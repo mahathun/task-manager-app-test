@@ -11,7 +11,7 @@ interface TaskDialogProps {
   isOpen: boolean
   onClose: () => void
   onSave: (task: Task) => void
-  task?: Task | null
+  task: Partial<Task>
 }
 
 export default function TaskDialog({ isOpen, onClose, onSave, task }: TaskDialogProps) {
@@ -66,7 +66,7 @@ export default function TaskDialog({ isOpen, onClose, onSave, task }: TaskDialog
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
-                <Select value={status} onValueChange={(value: TaskStatus) => setStatus(value)}>
+                <Select disabled={Boolean(!task.id)} value={status} onValueChange={(value: TaskStatus) => setStatus(value)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>

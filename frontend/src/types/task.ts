@@ -11,4 +11,7 @@ export interface Task {
     status: TaskStatus
 }
   
-  
+export interface TaskResponse {
+    data: Task | Task[] | boolean | null
+    error: string | null 
+}

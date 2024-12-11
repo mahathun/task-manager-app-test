@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { AnimatePresence, motion } from 'framer-motion'
 import { apiFetchTasks, apiAddTask, apiUpdateTask, apiDeleteTask } from './api'
 import TaskDialog from '@/components/task-dialog'
-import { Task } from './types/task'
+import { Task, TaskStatus } from './types/task'
 import TaskList from './components/task-list'
 import { useToast } from "@/hooks/use-toast"
 import { Toaster } from "@/components/ui/toaster"
@@ -25,8 +25,11 @@ function App() {
   useEffect(() => {
     const loadTasks = async () => {
       setIsLoading(true)
-      const data = await apiFetchTasks()
-      setTasks(data)
+      const response = await apiFetchTasks()
+      if(response && response.data) { 
+        setTasks(response.data as Task[])
+      }
+      
       setIsLoading(false)
     }
 
@@ -38,19 +41,20 @@ function App() {
   const addTask = async (task: Task) => {
     setIsLoading(true)
     
-    const newTask = await apiAddTask(task)
-    if (newTask) {
-      setTasks([...tasks, newTask]) 
+    const response = await apiAddTask(task)
+    
+    if (response && response.data) {
+      setTasks([...tasks, response.data as Task]) 
       toast({
         variant: "success",
-        title: `Task '${task.title}'`,
-        description: "Task created successfully",
+        title: "Sucess",
+        description: `Task '${task.title}' created successfully`,
       })
     }else{
       toast({
         variant: "destructive",
-        title: `Failed: '${task.title}'`,
-        description: "Failed to create the task.",
+        title: "Failed",
+        description: `${response.error}`,
       })
     }
 
@@ -61,23 +65,23 @@ function App() {
   // updating an existing task
   const updateTask = async(task: Task) => {
     setIsLoading(true)
-    const updatedTasks = await apiUpdateTask(task)
-    if(updatedTasks) {
+    const response = await apiUpdateTask(task)
+    if( response && response.data) {
       const updatedTaskIndex = tasks.findIndex((t) => t.id === task.id)
       const currentTasks = [...tasks]
 
-      currentTasks.splice(updatedTaskIndex, 1, updatedTasks)
+      currentTasks.splice(updatedTaskIndex, 1, response.data as Task) 
       setTasks(currentTasks)
       toast({
         variant: "default",
-        title: `Task '${task.title}'`,
-        description: "Task updated successfully",
+        title: "Success",
+        description: `Task '${task.title}' updated successfully`,
       })
     }else{
       toast({
         variant: "destructive",
-        title: `Failed: '${task.title}'`,
-        description: "Failed to update the task.",
+        title: `Failed`,
+        description: `${response.error}`,
       })
     }
 
@@ -92,13 +96,13 @@ function App() {
 
     const taskToDelete = tasks.find((task) => task.id === id)
 
-    if(response) {
+    if(response && response.data) {
       const newTasks = tasks.filter((task) => task.id !== id)
       setTasks(newTasks)
       toast({
-        variant: "destructive",
-        title: `Deleted '${taskToDelete.title}'`,
-        description: `Task deleted successfully`,
+        variant: "success",
+        title: "Successfully Deleted",
+        description: `Task '${taskToDelete?.title}' deleted successfully`,
       })
     }else{
       
@@ -106,8 +110,8 @@ function App() {
 
       toast({
         variant: "destructive",
-        title: "Failed to delete the task",
-        description: "Failed to delete the task, Please try again after refreshing the page",
+        title: "Failed",
+        description: `${response.error}`,
       })
 
     }
@@ -130,6 +134,8 @@ function App() {
     } else {
       addTask(task)
     }
+
+    setEditingTask(null)  
   }
 
   return (
@@ -168,13 +174,13 @@ function App() {
         />
       </AnimatePresence>
 
-      <TaskDialog 
-        isOpen={isDialogOpen} 
-        onClose={() => setIsDialogOpen(false)}
-        onSave={onSaveTaskHandler}
-        task={editingTask}
-      />
-      <Toaster />
+    <TaskDialog 
+      isOpen={isDialogOpen} 
+      onClose={() => setIsDialogOpen(false)}
+      onSave={onSaveTaskHandler}
+      task={editingTask || { title: '', description: '', status: TaskStatus.PENDING } as Task}
+    />
+    <Toaster />
     </div>
   )
 }

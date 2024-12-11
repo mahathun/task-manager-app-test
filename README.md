@@ -72,6 +72,20 @@ points for using NestJS).
     npm run start
 4.	The backend server will run on [http://localhost:4000](http://localhost:4000)
 
+5. Run the tests
+    ```bash
+    npm run test
+    ```
+    or
+    ```bash
+    npm run test:cov
+    ```
+    or
+    ```bash
+    npm run test:watch
+    ```
+
+
 
 ### Frontend
 
@@ -84,7 +98,20 @@ points for using NestJS).
 3. Start the frontend application
     ```bash
     npm run dev
-4.	The frontend app will run on [http://localhost:5173](http://localhost:5173)
+    ```
+4. The frontend app will run on [http://localhost:5173](http://localhost:5173)
+5. Run the tests
+    ```bash
+    npm run test
+    ```
+    or
+    ```bash
+    npm run test:cov
+    ```
+    or
+    ```bash
+    npm run test:watch
+    ```
 
 
 

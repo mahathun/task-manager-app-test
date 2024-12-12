@@ -11,45 +11,13 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      // "rollup/parseAst": ["./node_modules/rollup/dist/parseAst"]
     },
     "jsx": "react-jsx",
+    // "moduleResolution": "Bundler",
+    // "module": "ES2015",
+    // "skipLibCheck": true
   },
-  "exclude": ["**/**.test.ts"]
+  
 }
-
-// "compilerOptions": {
-
-//     "target": "es5",
-
-//     "lib": ["dom", "dom.iterable", "esnext"],
-
-//     "allowJs": true,
-
-//     "skipLibCheck": true,
-
-//     "esModuleInterop": true,
-
-//     "allowSyntheticDefaultImports": true,
-
-//     "strict": true,
-
-//     "forceConsistentCasingInFileNames": true,
-
-//     "noFallthroughCasesInSwitch": true,
-
-//     "module": "esnext",
-
-//     "moduleResolution": "node",
-
-//     "resolveJsonModule": true,
-
-//     "isolatedModules": true,
-
-//     "noEmit": true,
-
-//     "jsx": "react-jsx"
-
-//   },
-
-//   "include": ["src"]

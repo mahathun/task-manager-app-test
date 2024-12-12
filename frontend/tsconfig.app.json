@@ -9,7 +9,7 @@
     },
     "jsx": "react-jsx",
     "moduleResolution": "Bundler",
-    "module": "ES2015",
+    "module": "es2020",
     // ...
   }
 }

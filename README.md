@@ -2,6 +2,9 @@
 
 A simple task management application with a frontend built using React (TypeScript) and a backend built using NestJ(TypeScript). This application allows users to create, view, edit, and delete tasks dynamically.
 
+
+### <a href="https://task-manager-app-test.vercel.app/" target="_blank">Live Demo - https://task-manager-app-test.vercel.app/</a>
+
 ---
 
 ## Objective

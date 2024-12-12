@@ -5,22 +5,22 @@ import { isInStringEnum } from '../utils/helpers';
 
 @Controller('tasks')
 export class TasksController {
-    constructor(private taskService: TasksService) {}
+    constructor(private tasksService: TasksService) {}
 
     @Get()
     getAllTasks() {
-        return this.taskService.getAllTasks();
+        return this.tasksService.getAllTasks();
     }
 
     @Post()
-    createTask(@Body() body: {title: string, description: string}): Task {
+    createTask(@Body() body: {title: string, description: string}): Task | null {
         const { title, description } = body;
 
-        if (title ==="") {
+        if (!title) {
             throw new HttpException('Title is required', HttpStatus.BAD_REQUEST);
         }
 
-        const task = this.taskService.createTask(title, description);
+        const task = this.tasksService.createTask(title, description);
         return task;
     }   
 
@@ -28,7 +28,7 @@ export class TasksController {
     updateTaskStatus(@Body() updateFields: Partial<Task>, @Param('id') id: string): Task | null {
         const {title, status} = updateFields;
 
-        if (title ==="") {
+        if (title === "") {
             throw new HttpException('Title is required', HttpStatus.BAD_REQUEST);
         }
 
@@ -36,12 +36,12 @@ export class TasksController {
             throw new HttpException('Only Pending and Completed status allowed', HttpStatus.BAD_REQUEST);
         }
 
-        return this.taskService.updateTaskStatus(id, updateFields);
+        return this.tasksService.updateTaskStatus(id, updateFields);
     }
 
     @Delete(':id')
     deleteTask(@Param('id') id: string): boolean {
-        const hasTaskDeleted = this.taskService.deleteTask(id);
+        const hasTaskDeleted = this.tasksService.deleteTask(id);
 
         if (!hasTaskDeleted) {
             throw new HttpException('Task not found', HttpStatus.NOT_FOUND);

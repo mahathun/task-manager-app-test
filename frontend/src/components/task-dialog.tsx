@@ -45,7 +45,7 @@ export default function TaskDialog({ isOpen, onClose, onSave, task }: TaskDialog
     <AnimatePresence>
       {isOpen && (
         <Dialog open={isOpen} onOpenChange={onClose}>
-          <DialogContent>
+          <DialogContent className='pb-4'>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -57,6 +57,7 @@ export default function TaskDialog({ isOpen, onClose, onSave, task }: TaskDialog
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <Input
+                  required = {true}
                   placeholder="Task title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
@@ -78,7 +79,7 @@ export default function TaskDialog({ isOpen, onClose, onSave, task }: TaskDialog
               </div>
               <DialogFooter>
                 <Button variant="outline" onClick={onClose}>Cancel</Button>
-                <Button onClick={handleSave}>Save</Button>
+                <Button disabled={Boolean(!title)} onClick={handleSave}>Save</Button>
               </DialogFooter>
             </motion.div>
           </DialogContent>

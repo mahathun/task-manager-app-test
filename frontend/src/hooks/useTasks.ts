@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { apiFetchTasks, apiAddTask, apiUpdateTask, apiDeleteTask } from '@/api';
-import { Task } from '@/types/task';
-import { useToast } from '@/hooks/useToast';
+import { apiFetchTasks, apiAddTask, apiUpdateTask, apiDeleteTask } from '../api';
+import { Task } from '../types/task';
+import { useToast } from '../hooks/useToast';
 
 export const useTasks = () => {
   // State for tasks and loading status
@@ -20,19 +20,19 @@ export const useTasks = () => {
   const loadTasks = async () => {
     setIsLoading(true);
     try {
-    const response = await apiFetchTasks();
-    if (response && response.data) {
-        setTasks(response.data as Task[]);
-    }
+        const response = await apiFetchTasks();
+        if (response && response.data) {
+            setTasks(response.data as Task[]);
+        }
     } catch (error) {
-    console.error('Error fetching tasks:', error);
-    toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: 'Failed to load tasks. Please try again.',
-    });
+        console.error('Error fetching tasks:', error);
+        toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Failed to load tasks. Please try again.',
+        });
     } finally {
-    setIsLoading(false);
+        setIsLoading(false);
     }
 };
 
@@ -40,30 +40,25 @@ export const useTasks = () => {
   const addTask = async (task: Task) => {
     setIsLoading(true);
     try {
-      const response = await apiAddTask(task);
-      if (response && response.data) {
-        setTasks((prevTasks) => [...prevTasks, response.data as Task]);
-        toast({
-          variant: 'success',
-          title: 'Success',
-          description: `Task '${task.title}' created successfully.`,
-        });
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Failed',
-          description: response.error || 'An error occurred while adding the task.',
-        });
-      }
+        const response = await apiAddTask(task);
+        if (response && response.data) {
+            await setTasks((prevTasks) => [...prevTasks, response.data as Task]);
+        } else {
+            toast({
+                variant: 'destructive',
+                title: 'Failed',
+                description: response.error || 'An error occurred while adding the task.',
+            });
+        }
     } catch (error) {
-      console.error('Error adding task:', error);
-      toast({
-        variant: 'destructive',
-        title: 'Failed',
-        description: 'An error occurred while adding the task.',
-      });
+        console.error('Error adding task:', error);
+        toast({
+            variant: 'destructive',
+            title: 'Failed',
+            description: 'An error occurred while adding the task.',
+        });
     } finally {
-      setIsLoading(false);
+        setIsLoading(false);
     }
   };
 
@@ -71,35 +66,35 @@ export const useTasks = () => {
   const updateTask = async (task: Task) => {
     setIsLoading(true);
     try {
-      const response = await apiUpdateTask(task);
-      if (response && response.data) {
+        const response = await apiUpdateTask(task);
+        if (response && response.data) {
         setTasks((prevTasks) => {
-          const updatedTaskIndex = prevTasks.findIndex((t) => t.id === task.id);
-          const currentTasks = [...prevTasks];
-          currentTasks.splice(updatedTaskIndex, 1, response.data as Task);
-          return currentTasks;
+            const updatedTaskIndex = prevTasks.findIndex((t) => t.id === task.id);
+            const currentTasks = [...prevTasks];
+            currentTasks.splice(updatedTaskIndex, 1, response.data as Task);
+            return currentTasks;
         });
         toast({
-          variant: 'success',
-          title: 'Success',
-          description: `Task '${task.title}' updated successfully.`,
+            variant: 'success',
+            title: 'Success',
+            description: `Task '${task.title}' updated successfully.`,
         });
       } else {
         toast({
-          variant: 'destructive',
-          title: 'Failed',
-          description: response.error || 'An error occurred while updating the task.',
+            variant: 'destructive',
+            title: 'Failed',
+            description: response.error || 'An error occurred while updating the task.',
         });
       }
     } catch (error) {
-      console.error('Error updating task:', error);
-      toast({
-        variant: 'destructive',
-        title: 'Failed',
-        description: 'An error occurred while updating the task.',
-      });
+        console.error('Error updating task:', error);
+        toast({
+            variant: 'destructive',
+            title: 'Failed',
+            description: 'An error occurred while updating the task.',
+        });
     } finally {
-      setIsLoading(false);
+        setIsLoading(false);
     }
   };
 
@@ -113,26 +108,26 @@ export const useTasks = () => {
       if (response && response.data) {
         setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
         toast({
-          variant: 'success',
-          title: 'Successfully Deleted',
-          description: `Task '${taskToDelete?.title}' deleted successfully.`,
+            variant: 'success',
+            title: 'Successfully Deleted',
+            description: `Task '${taskToDelete?.title}' deleted successfully.`,
         });
       } else {
         toast({
-          variant: 'destructive',
-          title: 'Failed',
-          description: response.error || 'An error occurred while deleting the task.',
+            variant: 'destructive',
+            title: 'Failed',
+            description: response.error || 'An error occurred while deleting the task.',
         });
       }
     } catch (error) {
-      console.error('Error deleting task:', error);
-      toast({
-        variant: 'destructive',
-        title: 'Failed',
-        description: 'An error occurred while deleting the task.',
-      });
+        console.error('Error deleting task:', error);
+        toast({
+            variant: 'destructive',
+            title: 'Failed',
+            description: 'An error occurred while deleting the task.',
+        });
     } finally {
-      setIsLoading(false);
+        setIsLoading(false);
     }
   };
 

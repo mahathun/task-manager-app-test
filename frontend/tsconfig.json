@@ -14,7 +14,8 @@
       "@/*": ["./src/*"]
     },
     "jsx": "react-jsx",
-  }
+  },
+  "exclude": ["**/**.test.ts"]
 }
 
 // "compilerOptions": {
